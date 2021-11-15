@@ -58,7 +58,7 @@ const Recordings: React.FC = () => {
   console.log("render", audioConstraint.current);
 
   return (
-    <main>
+    <>
       <h1>Recordings!</h1>
       <div>Status: {status}</div>
       <div>Error: {error}</div>
@@ -102,7 +102,7 @@ const Recordings: React.FC = () => {
           </div>
         ))}
       </div>
-    </main>
+    </>
   );
 };
 
