@@ -7,5 +7,6 @@ export default defineConfig({
   server: {
     https: true,
   },
+  base: "",
   plugins: [mkcert(), react()],
 });
