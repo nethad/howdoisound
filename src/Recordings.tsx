@@ -95,12 +95,20 @@ const Recordings: React.FC<RecordingsProps> = ({ listDevices, devices }) => {
       </div>
       <div>
         {status !== "recording" && (
-          <button className="button" type="button" onClick={onNewRecording}>
+          <button
+            className="button is-primary"
+            type="button"
+            onClick={onNewRecording}
+          >
             Start New Recording
           </button>
         )}
         {status === "recording" && (
-          <button className="button" type="button" onClick={stopRecording}>
+          <button
+            className="button is-warning"
+            type="button"
+            onClick={stopRecording}
+          >
             Stop Recording
           </button>
         )}
