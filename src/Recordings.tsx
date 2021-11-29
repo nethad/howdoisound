@@ -51,6 +51,10 @@ const Recordings: React.FC<RecordingsProps> = ({ listDevices, devices }) => {
     listDevices();
   };
 
+  const deleteBlob = (deletedBlob: { url: string }) => {
+    setBlobUrls(blobUrls.filter((blob) => blob.url !== deletedBlob.url));
+  };
+
   if (isDebugMode) {
     console.log("render", audioConstraint.current);
   }
@@ -104,6 +108,11 @@ const Recordings: React.FC<RecordingsProps> = ({ listDevices, devices }) => {
       <div className="mt-5">
         {blobUrls.map((blob, index) => (
           <div className="columns" key={index}>
+            <div className="column my-auto is-narrow">
+              <span className="button" onClick={() => deleteBlob(blob)}>
+                Delete
+              </span>
+            </div>
             <div className="column is-narrow my-auto">
               <audio src={blob.url} controls />
             </div>
