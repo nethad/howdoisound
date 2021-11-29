@@ -61,8 +61,14 @@ const Recordings: React.FC<RecordingsProps> = ({ listDevices, devices }) => {
         <div>Status: {status}</div>
         <div>Error: {error || "-"}</div>
       </div>
-      {previewAudioStream && <AudioAnalyser audio={previewAudioStream} />}
-      <div className="field">
+      {previewAudioStream?.active ? (
+        <AudioAnalyser audio={previewAudioStream} />
+      ) : (
+        <div
+          style={{ height: 106, width: 300, border: "1px lightGrey solid" }}
+        ></div>
+      )}
+      <div className="field mt-3">
         <label className="label">Devices</label>
         <select
           id="audioSource"
@@ -95,11 +101,19 @@ const Recordings: React.FC<RecordingsProps> = ({ listDevices, devices }) => {
           </button>
         )}
       </div>
-      <div>
+      <div className="mt-5">
         {blobUrls.map((blob, index) => (
-          <div key={index}>
-            {blob.label}
-            <audio src={blob.url} controls />
+          <div className="columns" key={index}>
+            <div className="column is-narrow my-auto">
+              <audio src={blob.url} controls />
+            </div>
+            <div
+              className="column my-auto"
+              contentEditable
+              suppressContentEditableWarning
+            >
+              {blob.label}
+            </div>
           </div>
         ))}
       </div>

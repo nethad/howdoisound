@@ -45,7 +45,12 @@ class AudioVisualiser extends Component<AudioVisualiserProps> {
   }
 
   render() {
-    return <canvas width="300" height="100" ref={this.canvas} />;
+    return (
+      <canvas
+        style={{ border: "1px lightGrey solid", height: 100, width: 300 }}
+        ref={this.canvas}
+      />
+    );
   }
 }
 
