@@ -1,15 +1,15 @@
-import Recordings from "./Recordings";
+import Wizard from "./Wizard";
 
 function App() {
   return (
     <div className="App">
       <section className="section">
         <div className="container">
-          <h1 className="title">Hello World</h1>
+          <h1 className="title">How Do I Sound?</h1>
           <p className="subtitle">
-            My first website with <strong>Bulma</strong>!
+            Record and compare your microphone sources.
           </p>
-          <Recordings />
+          <Wizard />
         </div>
       </section>
     </div>

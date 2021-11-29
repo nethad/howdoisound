@@ -1,12 +1,18 @@
 import React, { useRef, useState } from "react";
 import { useReactMediaRecorder } from "react-media-recorder";
+import AudioAnalyser from "./AudioAnalyser";
 
-const Recordings: React.FC = () => {
+interface RecordingsProps {
+  listDevices: () => Promise<unknown>;
+  devices: MediaDeviceInfo[];
+}
+
+const Recordings: React.FC<RecordingsProps> = ({ listDevices, devices }) => {
+  const queryParams = new URLSearchParams(window.location.search);
+  const isDebugMode = queryParams.has("debug");
   const [blobUrls, setBlobUrls] = useState<
     { url: string; blob: Blob; label: string }[]
   >([]);
-  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
-  // const [currentDevice, setCurrentDevice] = useState<string | null>(null);
   const audioConstraint = useRef<{ deviceId: { exact: string } | undefined }>({
     deviceId: undefined,
   });
@@ -33,16 +39,6 @@ const Recordings: React.FC = () => {
     listDevices();
   };
 
-  const listDevices = async () => {
-    const stream = await window.navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: false,
-    });
-    const devices = await window.navigator.mediaDevices.enumerateDevices();
-    setDevices(devices.filter((device) => device.kind === "audioinput"));
-    stream.getTracks().forEach((track) => track.stop());
-  };
-
   const { status, startRecording, stopRecording, previewAudioStream, error } =
     useReactMediaRecorder({
       video: false,
@@ -55,18 +51,23 @@ const Recordings: React.FC = () => {
     listDevices();
   };
 
-  console.log("render", audioConstraint.current);
+  if (isDebugMode) {
+    console.log("render", audioConstraint.current);
+  }
 
   return (
     <>
-      <h1>Recordings!</h1>
-      <div>Status: {status}</div>
-      <div>Error: {error}</div>
-      <div>
-        Devices:
+      <div className={isDebugMode ? "" : "is-hidden"}>
+        <div>Status: {status}</div>
+        <div>Error: {error || "-"}</div>
+      </div>
+      {previewAudioStream && <AudioAnalyser audio={previewAudioStream} />}
+      <div className="field">
+        <label className="label">Devices</label>
         <select
           id="audioSource"
           ref={audioSource}
+          className="select"
           onChange={(ev) => {
             audioConstraint.current = { deviceId: { exact: ev.target.value } };
             listDevices();
@@ -78,18 +79,18 @@ const Recordings: React.FC = () => {
             </option>
           ))}
         </select>
-        <button type="button" onClick={listDevices}>
+        <button className="button ml-3" type="button" onClick={listDevices}>
           List devices
         </button>
       </div>
       <div>
         {status !== "recording" && (
-          <button type="button" onClick={onNewRecording}>
-            New Recording
+          <button className="button" type="button" onClick={onNewRecording}>
+            Start New Recording
           </button>
         )}
         {status === "recording" && (
-          <button type="button" onClick={stopRecording}>
+          <button className="button" type="button" onClick={stopRecording}>
             Stop Recording
           </button>
         )}
