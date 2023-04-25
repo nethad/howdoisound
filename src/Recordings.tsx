@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useReactMediaRecorder } from "react-media-recorder";
+import { useReactMediaRecorder } from "react-media-recorder-2";
 import AudioAnalyser from "./AudioAnalyser";
 
 interface RecordingsProps {
